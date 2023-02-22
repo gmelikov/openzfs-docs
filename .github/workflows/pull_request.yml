@@ -24,3 +24,5 @@ jobs:
       with:
         name: DocumentationHTML
         path: docs/_build/html/
+    - uses: rojopolis/spellcheck-github-actions@0.30.0
+      name: Spellcheck
