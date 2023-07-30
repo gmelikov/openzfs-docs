@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NixOS Root on ZFS &mdash; OpenZFS  documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/mandoc.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="openSUSE" href="../openSUSE/index.html" />
+    <link rel="prev" title="NixOS" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #29667e" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_main.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../Alpine Linux/index.html">Alpine Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Arch Linux/index.html">Arch Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Debian/index.html">Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fedora/index.html">Fedora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../FreeBSD.html">FreeBSD</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://wiki.gentoo.org/wiki/ZFS">Gentoo</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">NixOS</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#contents">Contents</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">NixOS Root on ZFS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#support">Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#root-on-zfs">Root on ZFS</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">NixOS Root on ZFS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#contribute">Contribute</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../openSUSE/index.html">openSUSE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../RHEL-based distro/index.html">RHEL-based distro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Ubuntu/index.html">Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zfs_root_maintenance.html">Root on ZFS maintenance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Project and Community/index.html">Project and Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developer Resources/index.html">Developer Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Performance and Tuning/index.html">Performance and Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Basic Concepts/index.html">Basic Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../man/index.html">Man Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../msg/index.html">ZFS Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../License.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #29667e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OpenZFS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Getting Started</a></li>
+          <li class="breadcrumb-item"><a href="index.html">NixOS</a></li>
+      <li class="breadcrumb-item active">NixOS Root on ZFS</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/openzfs/openzfs-docs/blob/master/docs/Getting Started/NixOS/Root on ZFS.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="nixos-root-on-zfs">
+<h1>NixOS Root on ZFS<a class="headerlink" href="#nixos-root-on-zfs" title="Permalink to this headline"></a></h1>
+<p><strong>Note for arm64</strong>:</p>
+<p>Currently there is a bug with the grub installation script.  See <a class="reference external" href="https://github.com/NixOS/nixpkgs/issues/222491">here</a> for details.</p>
+<p><strong>Note for Immutable Root</strong>:</p>
+<p>Immutable root can be enabled or disabled by setting
+<code class="docutils literal notranslate"><span class="pre">zfs-root.boot.immutable</span></code> option inside per-host configuration.</p>
+<p><strong>Customization</strong></p>
+<p>Unless stated otherwise, it is not recommended to customize system
+configuration before reboot.</p>
+<div class="section" id="preparation">
+<h2>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Disable Secure Boot. ZFS modules can not be loaded if Secure Boot is enabled.</p></li>
+<li><p>Download <a class="reference external" href="https://nixos.org/download.html#nixos-iso">NixOS Live Image</a> and boot from it.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sha256sum -c ./nixos-*.sha256
+
+dd <span class="k">if</span><span class="o">=</span>input-file <span class="nv">of</span><span class="o">=</span>output-file <span class="nv">bs</span><span class="o">=</span>1M
+</pre></div>
+</div>
+</li>
+<li><p>Connect to the Internet.</p></li>
+<li><p>Set root password or <code class="docutils literal notranslate"><span class="pre">/root/.ssh/authorized_keys</span></code>.</p></li>
+<li><p>Start SSH server</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>systemctl restart sshd
+</pre></div>
+</div>
+</li>
+<li><p>Connect from another computer</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ssh root@192.168.1.91
+</pre></div>
+</div>
+</li>
+<li><p>Target disk</p>
+<p>List available disks with</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>find /dev/disk/by-id/
+</pre></div>
+</div>
+<p>If virtio is used as disk bus, power off the VM and set serial numbers for disk.
+For QEMU, use <code class="docutils literal notranslate"><span class="pre">-drive</span> <span class="pre">format=raw,file=disk2.img,serial=AaBb</span></code>.
+For libvirt, edit domain XML.  See <a class="reference external" href="https://bugzilla.redhat.com/show_bug.cgi?id=1245013">this page</a> for examples.</p>
+<p>Declare disk array</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">DISK</span><span class="o">=</span><span class="s1">&#39;/dev/disk/by-id/ata-FOO /dev/disk/by-id/nvme-BAR&#39;</span>
+</pre></div>
+</div>
+<p>For single disk installation, use</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">DISK</span><span class="o">=</span><span class="s1">&#39;/dev/disk/by-id/disk1&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set a mount point</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">MNT</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set partition size:</p>
+<p>Set swap size in GB, set to 1 if you don’t want swap to
+take up too much space</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">SWAPSIZE</span><span class="o">=</span><span class="m">4</span>
+</pre></div>
+</div>
+<p>Set how much space should be left at the end of the disk, minimum 1GB</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">RESERVE</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</li>
+<li><p>Enable Nix Flakes functionality</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mkdir -p ~/.config/nix
+<span class="nb">echo</span> <span class="s2">&quot;experimental-features = nix-command flakes&quot;</span> &gt;&gt; ~/.config/nix/nix.conf
+</pre></div>
+</div>
+</li>
+<li><p>Install programs needed for system installation</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> ! <span class="nb">command</span> -v git<span class="p">;</span> <span class="k">then</span> nix-env -f <span class="s1">&#39;&lt;nixpkgs&gt;&#39;</span> -iA git<span class="p">;</span> <span class="k">fi</span>
+<span class="k">if</span> ! <span class="nb">command</span> -v jq<span class="p">;</span>  <span class="k">then</span> nix-env -f <span class="s1">&#39;&lt;nixpkgs&gt;&#39;</span> -iA jq<span class="p">;</span> <span class="k">fi</span>
+<span class="k">if</span> ! <span class="nb">command</span> -v partprobe<span class="p">;</span>  <span class="k">then</span> nix-env -f <span class="s1">&#39;&lt;nixpkgs&gt;&#39;</span> -iA parted<span class="p">;</span> <span class="k">fi</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="system-installation">
+<h2>System Installation<a class="headerlink" href="#system-installation" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Partition the disks.</p>
+<p>Note: you must clear all existing partition tables and data structures from the disks,
+especially those with existing ZFS pools or mdraid and those that have been used as live media.
+Those data structures may interfere with boot process.</p>
+<p>For flash-based storage, this can be done by the blkdiscard command below:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>partition_disk <span class="o">()</span> <span class="o">{</span>
+ <span class="nb">local</span> <span class="nv">disk</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span><span class="s2">&quot;</span>
+ blkdiscard -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">||</span> <span class="nb">true</span>
+
+ parted --script --align<span class="o">=</span>optimal  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk</span><span class="si">}</span><span class="s2">&quot;</span> -- <span class="se">\</span>
+ mklabel gpt <span class="se">\</span>
+ mkpart EFI 2MiB 1GiB <span class="se">\</span>
+ mkpart bpool 1GiB 5GiB <span class="se">\</span>
+ mkpart rpool 5GiB -<span class="k">$((</span>SWAPSIZE <span class="o">+</span> RESERVE<span class="k">))</span>GiB <span class="se">\</span>
+ mkpart swap  -<span class="k">$((</span>SWAPSIZE <span class="o">+</span> RESERVE<span class="k">))</span>GiB -<span class="s2">&quot;</span><span class="si">${</span><span class="nv">RESERVE</span><span class="si">}</span><span class="s2">&quot;</span>GiB <span class="se">\</span>
+ mkpart BIOS 1MiB 2MiB <span class="se">\</span>
+ <span class="nb">set</span> <span class="m">1</span> esp on <span class="se">\</span>
+ <span class="nb">set</span> <span class="m">5</span> bios_grub on <span class="se">\</span>
+ <span class="nb">set</span> <span class="m">5</span> legacy_boot on
+
+ partprobe <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk</span><span class="si">}</span><span class="s2">&quot;</span>
+ udevadm settle
+<span class="o">}</span>
+
+<span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+   partition_disk <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+</li>
+<li><p>Setup encrypted swap.  This is useful if the available memory is
+small:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+   cryptsetup open --type plain --key-file /dev/random <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>-part4 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part4
+   mkswap /dev/mapper/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part4
+   swapon /dev/mapper/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part4
+<span class="k">done</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create boot pool</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># shellcheck disable=SC2046</span>
+zpool create <span class="se">\</span>
+    -o <span class="nv">compatibility</span><span class="o">=</span>grub2 <span class="se">\</span>
+    -o <span class="nv">ashift</span><span class="o">=</span><span class="m">12</span> <span class="se">\</span>
+    -o <span class="nv">autotrim</span><span class="o">=</span>on <span class="se">\</span>
+    -O <span class="nv">acltype</span><span class="o">=</span>posixacl <span class="se">\</span>
+    -O <span class="nv">canmount</span><span class="o">=</span>off <span class="se">\</span>
+    -O <span class="nv">compression</span><span class="o">=</span>lz4 <span class="se">\</span>
+    -O <span class="nv">devices</span><span class="o">=</span>off <span class="se">\</span>
+    -O <span class="nv">normalization</span><span class="o">=</span>formD <span class="se">\</span>
+    -O <span class="nv">relatime</span><span class="o">=</span>on <span class="se">\</span>
+    -O <span class="nv">xattr</span><span class="o">=</span>sa <span class="se">\</span>
+    -O <span class="nv">mountpoint</span><span class="o">=</span>/boot <span class="se">\</span>
+    -R <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    bpool <span class="se">\</span>
+  mirror <span class="se">\</span>
+    <span class="k">$(for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+       <span class="nb">printf</span> <span class="s1">&#39;%s &#39;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">-part2&quot;</span><span class="p">;</span>
+      <span class="k">done)</span>
+</pre></div>
+</div>
+<p>If not using a multi-disk setup, remove <code class="docutils literal notranslate"><span class="pre">mirror</span></code>.</p>
+<p>You should not need to customize any of the options for the boot pool.</p>
+<p>GRUB does not support all of the zpool features. See <code class="docutils literal notranslate"><span class="pre">spa_feature_names</span></code>
+in <a class="reference external" href="http://git.savannah.gnu.org/cgit/grub.git/tree/grub-core/fs/zfs/zfs.c#n276">grub-core/fs/zfs/zfs.c</a>.
+This step creates a separate boot pool for <code class="docutils literal notranslate"><span class="pre">/boot</span></code> with the features
+limited to only those that GRUB supports, allowing the root pool to use
+any/all features.</p>
+<p>Features enabled with <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">compatibility=grub2</span></code> can be seen
+<a class="reference external" href="https://github.com/openzfs/zfs/blob/master/cmd/zpool/compatibility.d/grub2">here</a>.</p>
+</li>
+<li><p>Create root pool</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># shellcheck disable=SC2046</span>
+zpool create <span class="se">\</span>
+    -o <span class="nv">ashift</span><span class="o">=</span><span class="m">12</span> <span class="se">\</span>
+    -o <span class="nv">autotrim</span><span class="o">=</span>on <span class="se">\</span>
+    -R <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    -O <span class="nv">acltype</span><span class="o">=</span>posixacl <span class="se">\</span>
+    -O <span class="nv">canmount</span><span class="o">=</span>off <span class="se">\</span>
+    -O <span class="nv">compression</span><span class="o">=</span>zstd <span class="se">\</span>
+    -O <span class="nv">dnodesize</span><span class="o">=</span>auto <span class="se">\</span>
+    -O <span class="nv">normalization</span><span class="o">=</span>formD <span class="se">\</span>
+    -O <span class="nv">relatime</span><span class="o">=</span>on <span class="se">\</span>
+    -O <span class="nv">xattr</span><span class="o">=</span>sa <span class="se">\</span>
+    -O <span class="nv">mountpoint</span><span class="o">=</span>/ <span class="se">\</span>
+    rpool <span class="se">\</span>
+    mirror <span class="se">\</span>
+   <span class="k">$(for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+      <span class="nb">printf</span> <span class="s1">&#39;%s &#39;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">-part3&quot;</span><span class="p">;</span>
+     <span class="k">done)</span>
+</pre></div>
+</div>
+<p>If not using a multi-disk setup, remove <code class="docutils literal notranslate"><span class="pre">mirror</span></code>.</p>
+</li>
+<li><p>Create root system container:</p>
+<ul>
+<li><p>Unencrypted</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zfs create <span class="se">\</span>
+ -o <span class="nv">canmount</span><span class="o">=</span>off <span class="se">\</span>
+ -o <span class="nv">mountpoint</span><span class="o">=</span>none <span class="se">\</span>
+rpool/nixos
+</pre></div>
+</div>
+</li>
+<li><p>Encrypted:</p>
+<p>Pick a strong password. Once compromised, changing password will not keep your
+data safe. See <code class="docutils literal notranslate"><span class="pre">zfs-change-key(8)</span></code> for more info</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zfs create <span class="se">\</span>
+  -o <span class="nv">canmount</span><span class="o">=</span>off <span class="se">\</span>
+         -o <span class="nv">mountpoint</span><span class="o">=</span>none <span class="se">\</span>
+         -o <span class="nv">encryption</span><span class="o">=</span>on <span class="se">\</span>
+         -o <span class="nv">keylocation</span><span class="o">=</span>prompt <span class="se">\</span>
+         -o <span class="nv">keyformat</span><span class="o">=</span>passphrase <span class="se">\</span>
+rpool/nixos
+</pre></div>
+</div>
+</li>
+</ul>
+<p>You can automate this step (insecure) with: <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">POOLPASS</span> <span class="pre">|</span> <span class="pre">zfs</span> <span class="pre">create</span> <span class="pre">...</span></code>.</p>
+<p>Create system datasets,
+manage mountpoints with <code class="docutils literal notranslate"><span class="pre">mountpoint=legacy</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy     rpool/nixos/root
+mount -t zfs rpool/nixos/root <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy rpool/nixos/home
+mkdir <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/home
+mount -t zfs rpool/nixos/home <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/home
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy  rpool/nixos/var
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy rpool/nixos/var/lib
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy rpool/nixos/var/log
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>none bpool/nixos
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy bpool/nixos/root
+mkdir <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot
+mount -t zfs bpool/nixos/root <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot
+mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/var/log
+mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/var/lib
+mount -t zfs rpool/nixos/var/lib <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/var/lib
+mount -t zfs rpool/nixos/var/log <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/var/log
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy rpool/nixos/empty
+zfs snapshot rpool/nixos/empty@start
+</pre></div>
+</div>
+</li>
+<li><p>Format and mount ESP</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+ mkfs.vfat -n EFI <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>-part1
+ mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/efis/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part1
+ mount -t vfat -o <span class="nv">iocharset</span><span class="o">=</span>iso8859-1 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>-part1 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/efis/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part1
+<span class="k">done</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="system-configuration">
+<h2>System Configuration<a class="headerlink" href="#system-configuration" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Clone template flake configuration</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc
+git clone --depth <span class="m">1</span> --branch openzfs-guide <span class="se">\</span>
+  https://github.com/ne9z/dotfiles-flake.git <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos
+</pre></div>
+</div>
+</li>
+<li><p>From now on, the complete configuration of the system will be
+tracked by git, set a user name and email address to continue</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>rm -rf <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/.git
+git -C <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/ init -b main
+git -C <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/ add <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/
+git -C <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos config user.email <span class="s2">&quot;you@example.com&quot;</span>
+git -C <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos config user.name <span class="s2">&quot;Alice Q. Nixer&quot;</span>
+git -C <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos commit -asm <span class="s1">&#39;initial commit&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Customize configuration to your hardware</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+  sed -i <span class="se">\</span>
+  <span class="s2">&quot;s|/dev/disk/by-id/|</span><span class="si">${</span><span class="nv">i</span><span class="p">%/*</span><span class="si">}</span><span class="s2">/|&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/hosts/exampleHost/default.nix
+  <span class="nb">break</span>
+<span class="k">done</span>
+
+<span class="nv">diskNames</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+  <span class="nv">diskNames</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">diskNames</span><span class="si">}</span><span class="s2"> \&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">\&quot;&quot;</span>
+<span class="k">done</span>
+
+sed -i <span class="s2">&quot;s|\&quot;bootDevices_placeholder\&quot;|</span><span class="si">${</span><span class="nv">diskNames</span><span class="si">}</span><span class="s2">|g&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/hosts/exampleHost/default.nix
+
+sed -i <span class="s2">&quot;s|\&quot;abcd1234\&quot;|\&quot;</span><span class="k">$(</span>head -c4 /dev/urandom <span class="p">|</span> od -A none -t x4<span class="p">|</span> sed <span class="s1">&#39;s| ||g&#39;</span> <span class="o">||</span> <span class="nb">true</span><span class="k">)</span><span class="s2">\&quot;|g&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/hosts/exampleHost/default.nix
+
+sed -i <span class="s2">&quot;s|\&quot;x86_64-linux\&quot;|\&quot;</span><span class="k">$(</span>uname -m <span class="o">||</span> <span class="nb">true</span><span class="k">)</span><span class="s2">-linux\&quot;|g&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/flake.nix
+
+cp <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span> -v nixos-generate-config <span class="o">||</span> <span class="nb">true</span><span class="k">)</span><span class="s2">&quot;</span> ./nixos-generate-config
+
+chmod a+rw ./nixos-generate-config
+
+<span class="c1"># shellcheck disable=SC2016</span>
+<span class="nb">echo</span> <span class="s1">&#39;print STDOUT $initrdAvailableKernelModules&#39;</span> &gt;&gt; ./nixos-generate-config
+
+<span class="nv">kernelModules</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>./nixos-generate-config --show-hardware-config --no-filesystems <span class="p">|</span> tail -n1 <span class="o">||</span> <span class="nb">true</span><span class="k">)</span><span class="s2">&quot;</span>
+
+sed -i <span class="s2">&quot;s|\&quot;kernelModules_placeholder\&quot;|</span><span class="si">${</span><span class="nv">kernelModules</span><span class="si">}</span><span class="s2">|g&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/hosts/exampleHost/default.nix
+</pre></div>
+</div>
+</li>
+<li><p>Set root password</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">rootPwd</span><span class="o">=</span><span class="k">$(</span>mkpasswd -m SHA-512<span class="k">)</span>
+</pre></div>
+</div>
+<p>Declare password in configuration</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sed -i <span class="se">\</span>
+<span class="s2">&quot;s|rootHash_placeholder|</span><span class="si">${</span><span class="nv">rootPwd</span><span class="si">}</span><span class="s2">|&quot;</span> <span class="se">\</span>
+<span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos/configuration.nix
+</pre></div>
+</div>
+</li>
+<li><p>You can enable NetworkManager for wireless networks and GNOME
+desktop environment in <code class="docutils literal notranslate"><span class="pre">configuration.nix</span></code>.</p></li>
+<li><p>Commit changes to local repo</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git -C <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/nixos commit -asm <span class="s1">&#39;initial installation&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Update flake lock file to track latest system version</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>nix flake update --commit-lock-file <span class="se">\</span>
+  <span class="s2">&quot;git+file://</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">/etc/nixos&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Install system and apply configuration</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>nixos-install <span class="se">\</span>
+--root <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+--no-root-passwd <span class="se">\</span>
+--flake <span class="s2">&quot;git+file://</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">/etc/nixos#exampleHost&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Unmount filesystems</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>umount -Rl <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>
+zpool <span class="nb">export</span> -a
+</pre></div>
+</div>
+</li>
+<li><p>Reboot</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>reboot
+</pre></div>
+</div>
+</li>
+<li><p>For instructions on maintenance tasks, see <a class="reference external" href="../zfs_root_maintenance.html">Root on ZFS maintenance
+page</a>.</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="NixOS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../openSUSE/index.html" class="btn btn-neutral float-right" title="openSUSE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, OpenZFS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

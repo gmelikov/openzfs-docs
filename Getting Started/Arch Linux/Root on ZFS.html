@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arch Linux Root on ZFS &mdash; OpenZFS  documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/mandoc.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Debian" href="../Debian/index.html" />
+    <link rel="prev" title="Arch Linux" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #29667e" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_main.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../Alpine Linux/index.html">Alpine Linux</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Arch Linux</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#contents">Contents</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Arch Linux Root on ZFS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#support">Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#root-on-zfs">Root on ZFS</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Arch Linux Root on ZFS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#contribute">Contribute</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Debian/index.html">Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fedora/index.html">Fedora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../FreeBSD.html">FreeBSD</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://wiki.gentoo.org/wiki/ZFS">Gentoo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../NixOS/index.html">NixOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../openSUSE/index.html">openSUSE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../RHEL-based distro/index.html">RHEL-based distro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Ubuntu/index.html">Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zfs_root_maintenance.html">Root on ZFS maintenance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Project and Community/index.html">Project and Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Developer Resources/index.html">Developer Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Performance and Tuning/index.html">Performance and Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Basic Concepts/index.html">Basic Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../man/index.html">Man Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../msg/index.html">ZFS Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../License.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #29667e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OpenZFS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Getting Started</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Arch Linux</a></li>
+      <li class="breadcrumb-item active">Arch Linux Root on ZFS</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/openzfs/openzfs-docs/blob/master/docs/Getting Started/Arch Linux/Root on ZFS.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="arch-linux-root-on-zfs">
+<h1>Arch Linux Root on ZFS<a class="headerlink" href="#arch-linux-root-on-zfs" title="Permalink to this headline"></a></h1>
+<p><strong>Customization</strong></p>
+<p>Unless stated otherwise, it is not recommended to customize system
+configuration before reboot.</p>
+<div class="section" id="preparation">
+<h2>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Disable Secure Boot. ZFS modules can not be loaded if Secure Boot is enabled.</p></li>
+<li><p>Because the kernel of latest Live CD might be incompatible with
+ZFS, we will use Alpine Linux Extended, which ships with ZFS by
+default.</p>
+<p>Download latest extended variant of <a class="reference external" href="https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-extended-3.18.0-x86_64.iso">Alpine Linux
+live image</a>,
+verify <a class="reference external" href="https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-extended-3.18.0-x86_64.iso.asc">checksum</a>
+and boot from it.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>gpg --auto-key-retrieve --keyserver hkps://keyserver.ubuntu.com --verify alpine-extended-*.asc
+
+dd <span class="k">if</span><span class="o">=</span>input-file <span class="nv">of</span><span class="o">=</span>output-file <span class="nv">bs</span><span class="o">=</span>1M
+</pre></div>
+</div>
+</li>
+<li><p>Login as root user.  There is no password.</p></li>
+<li><p>Configure Internet</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>setup-interfaces -r
+<span class="c1"># You must use &quot;-r&quot; option to start networking services properly</span>
+<span class="c1"># example:</span>
+network interface: wlan0
+WiFi name:         &lt;ssid&gt;
+ip address:        dhcp
+&lt;enter <span class="k">done</span> to finish network config&gt;
+manual netconfig:  n
+</pre></div>
+</div>
+</li>
+<li><p>If you are using wireless network and it is not shown, see <a class="reference external" href="https://wiki.alpinelinux.org/wiki/Wi-Fi#wpa_supplicant">Alpine
+Linux wiki</a> for
+further details.  <code class="docutils literal notranslate"><span class="pre">wpa_supplicant</span></code> can be installed with <code class="docutils literal notranslate"><span class="pre">apk</span>
+<span class="pre">add</span> <span class="pre">wpa_supplicant</span></code> without internet connection.</p></li>
+<li><p>Configure SSH server</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>setup-sshd
+<span class="c1"># example:</span>
+ssh server:        openssh
+allow root:        <span class="s2">&quot;prohibit-password&quot;</span> or <span class="s2">&quot;yes&quot;</span>
+ssh key:           <span class="s2">&quot;none&quot;</span> or <span class="s2">&quot;&lt;public key&gt;&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set root password or <code class="docutils literal notranslate"><span class="pre">/root/.ssh/authorized_keys</span></code>.</p></li>
+<li><p>Connect from another computer</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ssh root@192.168.1.91
+</pre></div>
+</div>
+</li>
+<li><p>Configure NTP client for time synchronization</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>setup-ntp busybox
+</pre></div>
+</div>
+</li>
+<li><p>Set up apk-repo.  A list of available mirrors is shown.
+Press space bar to continue</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>setup-apkrepos
+</pre></div>
+</div>
+</li>
+<li><p>Throughout this guide, we use predictable disk names generated by
+udev</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>apk update
+apk add eudev
+setup-devd udev
+</pre></div>
+</div>
+</li>
+<li><p>Target disk</p>
+<p>List available disks with</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>find /dev/disk/by-id/
+</pre></div>
+</div>
+<p>If virtio is used as disk bus, power off the VM and set serial numbers for disk.
+For QEMU, use <code class="docutils literal notranslate"><span class="pre">-drive</span> <span class="pre">format=raw,file=disk2.img,serial=AaBb</span></code>.
+For libvirt, edit domain XML.  See <a class="reference external" href="https://bugzilla.redhat.com/show_bug.cgi?id=1245013">this page</a> for examples.</p>
+<p>Declare disk array</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">DISK</span><span class="o">=</span><span class="s1">&#39;/dev/disk/by-id/ata-FOO /dev/disk/by-id/nvme-BAR&#39;</span>
+</pre></div>
+</div>
+<p>For single disk installation, use</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">DISK</span><span class="o">=</span><span class="s1">&#39;/dev/disk/by-id/disk1&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set a mount point</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">MNT</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set partition size:</p>
+<p>Set swap size in GB, set to 1 if you don’t want swap to
+take up too much space</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">SWAPSIZE</span><span class="o">=</span><span class="m">4</span>
+</pre></div>
+</div>
+<p>Set how much space should be left at the end of the disk, minimum 1GB</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">RESERVE</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</li>
+<li><p>Install ZFS support from live media:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>apk add zfs
+</pre></div>
+</div>
+</li>
+<li><p>Install partition tool</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>apk add parted e2fsprogs cryptsetup util-linux
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="system-installation">
+<h2>System Installation<a class="headerlink" href="#system-installation" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Partition the disks.</p>
+<p>Note: you must clear all existing partition tables and data structures from the disks,
+especially those with existing ZFS pools or mdraid and those that have been used as live media.
+Those data structures may interfere with boot process.</p>
+<p>For flash-based storage, this can be done by the blkdiscard command below:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>partition_disk <span class="o">()</span> <span class="o">{</span>
+ <span class="nb">local</span> <span class="nv">disk</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span><span class="s2">&quot;</span>
+ blkdiscard -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">||</span> <span class="nb">true</span>
+
+ parted --script --align<span class="o">=</span>optimal  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk</span><span class="si">}</span><span class="s2">&quot;</span> -- <span class="se">\</span>
+ mklabel gpt <span class="se">\</span>
+ mkpart EFI 2MiB 1GiB <span class="se">\</span>
+ mkpart bpool 1GiB 5GiB <span class="se">\</span>
+ mkpart rpool 5GiB -<span class="k">$((</span>SWAPSIZE <span class="o">+</span> RESERVE<span class="k">))</span>GiB <span class="se">\</span>
+ mkpart swap  -<span class="k">$((</span>SWAPSIZE <span class="o">+</span> RESERVE<span class="k">))</span>GiB -<span class="s2">&quot;</span><span class="si">${</span><span class="nv">RESERVE</span><span class="si">}</span><span class="s2">&quot;</span>GiB <span class="se">\</span>
+ mkpart BIOS 1MiB 2MiB <span class="se">\</span>
+ <span class="nb">set</span> <span class="m">1</span> esp on <span class="se">\</span>
+ <span class="nb">set</span> <span class="m">5</span> bios_grub on <span class="se">\</span>
+ <span class="nb">set</span> <span class="m">5</span> legacy_boot on
+
+ partprobe <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+<span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+   partition_disk <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+</li>
+<li><p>Setup encrypted swap.  This is useful if the available memory is
+small:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+   cryptsetup open --type plain --key-file /dev/random <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>-part4 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part4
+   mkswap /dev/mapper/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part4
+   swapon /dev/mapper/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part4
+<span class="k">done</span>
+</pre></div>
+</div>
+</li>
+<li><p>Load ZFS kernel module</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>modprobe zfs
+</pre></div>
+</div>
+</li>
+<li><p>Create boot pool</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># shellcheck disable=SC2046</span>
+zpool create -d <span class="se">\</span>
+    -o feature@async_destroy<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@bookmarks<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@embedded_data<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@empty_bpobj<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@enabled_txg<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@extensible_dataset<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@filesystem_limits<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@hole_birth<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@large_blocks<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@lz4_compress<span class="o">=</span>enabled <span class="se">\</span>
+    -o feature@spacemap_histogram<span class="o">=</span>enabled <span class="se">\</span>
+    -o <span class="nv">ashift</span><span class="o">=</span><span class="m">12</span> <span class="se">\</span>
+    -o <span class="nv">autotrim</span><span class="o">=</span>on <span class="se">\</span>
+    -O <span class="nv">acltype</span><span class="o">=</span>posixacl <span class="se">\</span>
+    -O <span class="nv">canmount</span><span class="o">=</span>off <span class="se">\</span>
+    -O <span class="nv">compression</span><span class="o">=</span>lz4 <span class="se">\</span>
+    -O <span class="nv">devices</span><span class="o">=</span>off <span class="se">\</span>
+    -O <span class="nv">normalization</span><span class="o">=</span>formD <span class="se">\</span>
+    -O <span class="nv">relatime</span><span class="o">=</span>on <span class="se">\</span>
+    -O <span class="nv">xattr</span><span class="o">=</span>sa <span class="se">\</span>
+    -O <span class="nv">mountpoint</span><span class="o">=</span>/boot <span class="se">\</span>
+    -R <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    bpool <span class="se">\</span>
+           mirror <span class="se">\</span>
+    <span class="k">$(for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+       <span class="nb">printf</span> <span class="s1">&#39;%s &#39;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">-part2&quot;</span><span class="p">;</span>
+      <span class="k">done)</span>
+</pre></div>
+</div>
+<p>If not using a multi-disk setup, remove <code class="docutils literal notranslate"><span class="pre">mirror</span></code>.</p>
+<p>You should not need to customize any of the options for the boot pool.</p>
+<p>GRUB does not support all of the zpool features. See <code class="docutils literal notranslate"><span class="pre">spa_feature_names</span></code>
+in <a class="reference external" href="http://git.savannah.gnu.org/cgit/grub.git/tree/grub-core/fs/zfs/zfs.c#n276">grub-core/fs/zfs/zfs.c</a>.
+This step creates a separate boot pool for <code class="docutils literal notranslate"><span class="pre">/boot</span></code> with the features
+limited to only those that GRUB supports, allowing the root pool to use
+any/all features.</p>
+</li>
+<li><p>Create root pool</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># shellcheck disable=SC2046</span>
+zpool create <span class="se">\</span>
+    -o <span class="nv">ashift</span><span class="o">=</span><span class="m">12</span> <span class="se">\</span>
+    -o <span class="nv">autotrim</span><span class="o">=</span>on <span class="se">\</span>
+    -R <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    -O <span class="nv">acltype</span><span class="o">=</span>posixacl <span class="se">\</span>
+    -O <span class="nv">canmount</span><span class="o">=</span>off <span class="se">\</span>
+    -O <span class="nv">compression</span><span class="o">=</span>zstd <span class="se">\</span>
+    -O <span class="nv">dnodesize</span><span class="o">=</span>auto <span class="se">\</span>
+    -O <span class="nv">normalization</span><span class="o">=</span>formD <span class="se">\</span>
+    -O <span class="nv">relatime</span><span class="o">=</span>on <span class="se">\</span>
+    -O <span class="nv">xattr</span><span class="o">=</span>sa <span class="se">\</span>
+    -O <span class="nv">mountpoint</span><span class="o">=</span>/ <span class="se">\</span>
+    rpool <span class="se">\</span>
+    mirror <span class="se">\</span>
+   <span class="k">$(for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+      <span class="nb">printf</span> <span class="s1">&#39;%s &#39;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">-part3&quot;</span><span class="p">;</span>
+     <span class="k">done)</span>
+</pre></div>
+</div>
+<p>If not using a multi-disk setup, remove <code class="docutils literal notranslate"><span class="pre">mirror</span></code>.</p>
+</li>
+<li><p>Create root system container:</p>
+<ul>
+<li><p>Unencrypted</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zfs create <span class="se">\</span>
+ -o <span class="nv">canmount</span><span class="o">=</span>off <span class="se">\</span>
+ -o <span class="nv">mountpoint</span><span class="o">=</span>none <span class="se">\</span>
+rpool/archlinux
+</pre></div>
+</div>
+</li>
+<li><p>Encrypted:</p>
+<p>Pick a strong password. Once compromised, changing password will not keep your
+data safe. See <code class="docutils literal notranslate"><span class="pre">zfs-change-key(8)</span></code> for more info</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zfs create <span class="se">\</span>
+  -o <span class="nv">canmount</span><span class="o">=</span>off <span class="se">\</span>
+         -o <span class="nv">mountpoint</span><span class="o">=</span>none <span class="se">\</span>
+         -o <span class="nv">encryption</span><span class="o">=</span>on <span class="se">\</span>
+         -o <span class="nv">keylocation</span><span class="o">=</span>prompt <span class="se">\</span>
+         -o <span class="nv">keyformat</span><span class="o">=</span>passphrase <span class="se">\</span>
+rpool/archlinux
+</pre></div>
+</div>
+</li>
+</ul>
+<p>You can automate this step (insecure) with: <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">POOLPASS</span> <span class="pre">|</span> <span class="pre">zfs</span> <span class="pre">create</span> <span class="pre">...</span></code>.</p>
+<p>Create system datasets,
+manage mountpoints with <code class="docutils literal notranslate"><span class="pre">mountpoint=legacy</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zfs create -o <span class="nv">canmount</span><span class="o">=</span>noauto -o <span class="nv">mountpoint</span><span class="o">=</span>/  rpool/archlinux/root
+zfs mount rpool/archlinux/root
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy rpool/archlinux/home
+mkdir <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/home
+mount -t zfs rpool/archlinux/home <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/home
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy  rpool/archlinux/var
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy rpool/archlinux/var/lib
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy rpool/archlinux/var/log
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>none bpool/archlinux
+zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>legacy bpool/archlinux/root
+mkdir <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot
+mount -t zfs bpool/archlinux/root <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot
+mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/var/log
+mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/var/lib
+mount -t zfs rpool/archlinux/var/lib <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/var/lib
+mount -t zfs rpool/archlinux/var/log <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/var/log
+</pre></div>
+</div>
+</li>
+<li><p>Format and mount ESP</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+ mkfs.vfat -n EFI <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>-part1
+ mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/efis/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part1
+ mount -t vfat -o <span class="nv">iocharset</span><span class="o">=</span>iso8859-1 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>-part1 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/efis/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>-part1
+<span class="k">done</span>
+
+mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/efi
+mount -t vfat -o <span class="nv">iocharset</span><span class="o">=</span>iso8859-1 <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> sed <span class="s2">&quot;s|^ *||&quot;</span>  <span class="p">|</span> cut -f1 -d<span class="s1">&#39; &#39;</span><span class="o">||</span> <span class="nb">true</span><span class="k">)</span><span class="s2">&quot;</span>-part1 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/efi
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="system-configuration">
+<h2>System Configuration<a class="headerlink" href="#system-configuration" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Download and extract minimal Arch Linux root filesystem:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>apk add curl
+
+curl --fail-early --fail -L <span class="se">\</span>
+https://america.archive.pkgbuild.com/iso/2023.05.03/archlinux-bootstrap-x86_64.tar.gz <span class="se">\</span>
+-o rootfs.tar.gz
+curl --fail-early --fail -L <span class="se">\</span>
+https://america.archive.pkgbuild.com/iso/2023.05.03/archlinux-bootstrap-x86_64.tar.gz.sig <span class="se">\</span>
+-o rootfs.tar.gz.sig
+
+apk add gnupg
+gpg --auto-key-retrieve --keyserver hkps://keyserver.ubuntu.com --verify rootfs.tar.gz.sig
+
+ln -s <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/root.x86_64
+tar x  -C <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> -af rootfs.tar.gz root.x86_64
+</pre></div>
+</div>
+</li>
+<li><p>Enable community repo</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sed -i <span class="s1">&#39;/edge/d&#39;</span> /etc/apk/repositories
+sed -i -E <span class="s1">&#39;s/#(.*)community/\1community/&#39;</span> /etc/apk/repositories
+</pre></div>
+</div>
+</li>
+<li><p>Generate fstab:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>apk add arch-install-scripts
+genfstab -t PARTUUID <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+<span class="p">|</span> grep -v swap <span class="se">\</span>
+<span class="p">|</span> sed <span class="s2">&quot;s|vfat.*rw|vfat rw,x-systemd.idle-timeout=1min,x-systemd.automount,noauto,nofail|&quot;</span> <span class="se">\</span>
+&gt; <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/fstab
+</pre></div>
+</div>
+</li>
+<li><p>Chroot</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cp /etc/resolv.conf <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/resolv.conf
+<span class="k">for</span> i in /dev /proc /sys<span class="p">;</span> <span class="k">do</span> mkdir -p <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> mount --rbind <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">done</span>
+chroot <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span> /usr/bin/env <span class="nv">DISK</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="s2">&quot;</span> bash
+</pre></div>
+</div>
+</li>
+<li><p>Add archzfs repo to pacman config</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pacman-key --init
+pacman-key --refresh-keys
+pacman-key --populate
+
+curl --fail-early --fail -L https://archzfs.com/archzfs.gpg <span class="se">\</span>
+<span class="p">|</span>  pacman-key -a - --gpgdir /etc/pacman.d/gnupg
+
+pacman-key <span class="se">\</span>
+--lsign-key <span class="se">\</span>
+--gpgdir /etc/pacman.d/gnupg <span class="se">\</span>
+DDF7DB817396A49B2A2723F7403BD972F75D9D76
+
+tee -a /etc/pacman.d/mirrorlist-archzfs <span class="s">&lt;&lt;- &#39;EOF&#39;</span>
+<span class="s">## See https://github.com/archzfs/archzfs/wiki</span>
+<span class="s">## France</span>
+<span class="s">#,Server = https://archzfs.com/$repo/$arch</span>
+
+<span class="s">## Germany</span>
+<span class="s">#,Server = https://mirror.sum7.eu/archlinux/archzfs/$repo/$arch</span>
+<span class="s">#,Server = https://mirror.biocrafting.net/archlinux/archzfs/$repo/$arch</span>
+
+<span class="s">## India</span>
+<span class="s">#,Server = https://mirror.in.themindsmaze.com/archzfs/$repo/$arch</span>
+
+<span class="s">## United States</span>
+<span class="s">#,Server = https://zxcvfdsa.com/archzfs/$repo/$arch</span>
+<span class="s">EOF</span>
+
+tee -a /etc/pacman.conf <span class="s">&lt;&lt;- &#39;EOF&#39;</span>
+
+<span class="s">#[archzfs-testing]</span>
+<span class="s">#Include = /etc/pacman.d/mirrorlist-archzfs</span>
+
+<span class="s">#,[archzfs]</span>
+<span class="s">#,Include = /etc/pacman.d/mirrorlist-archzfs</span>
+<span class="s">EOF</span>
+
+<span class="c1"># this #, prefix is a workaround for ci/cd tests</span>
+<span class="c1"># remove them</span>
+sed -i <span class="s1">&#39;s|#,||&#39;</span> /etc/pacman.d/mirrorlist-archzfs
+sed -i <span class="s1">&#39;s|#,||&#39;</span> /etc/pacman.conf
+sed -i <span class="s1">&#39;s|^#||&#39;</span> /etc/pacman.d/mirrorlist
+</pre></div>
+</div>
+</li>
+<li><p>Install base packages:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pacman -Sy
+pacman -S --noconfirm mg mandoc grub efibootmgr mkinitcpio
+
+<span class="nv">kernel_compatible_with_zfs</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>pacman -Si zfs-linux <span class="se">\</span>
+<span class="p">|</span> grep <span class="s1">&#39;Depends On&#39;</span> <span class="se">\</span>
+<span class="p">|</span> sed <span class="s2">&quot;s|.*linux=||&quot;</span> <span class="se">\</span>
+<span class="p">|</span> awk <span class="s1">&#39;{ print $1 }&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+pacman -U --noconfirm https://america.archive.pkgbuild.com/packages/l/linux/linux-<span class="s2">&quot;</span><span class="si">${</span><span class="nv">kernel_compatible_with_zfs</span><span class="si">}</span><span class="s2">&quot;</span>-x86_64.pkg.tar.zst
+</pre></div>
+</div>
+</li>
+<li><p>Install zfs packages:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pacman -S --noconfirm zfs-linux zfs-utils
+</pre></div>
+</div>
+</li>
+<li><p>Configure mkinitcpio:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sed -i <span class="s1">&#39;s|filesystems|zfs filesystems|&#39;</span> /etc/mkinitcpio.conf
+mkinitcpio -P
+</pre></div>
+</div>
+</li>
+<li><p>For physical machine, install firmware</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pacman -S linux-firmware intel-ucode amd-ucode
+</pre></div>
+</div>
+</li>
+<li><p>Enable internet time synchronisation:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>systemctl <span class="nb">enable</span> systemd-timesyncd
+</pre></div>
+</div>
+</li>
+<li><p>Generate host id:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zgenhostid -f -o /etc/hostid
+</pre></div>
+</div>
+</li>
+<li><p>Generate locales:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;en_US.UTF-8 UTF-8&quot;</span> &gt;&gt; /etc/locale.gen
+locale-gen
+</pre></div>
+</div>
+</li>
+<li><p>Set locale, keymap, timezone, hostname</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>rm -f /etc/localtime
+systemd-firstboot <span class="se">\</span>
+--force <span class="se">\</span>
+--locale<span class="o">=</span>en_US.UTF-8 <span class="se">\</span>
+--timezone<span class="o">=</span>Etc/UTC <span class="se">\</span>
+--hostname<span class="o">=</span>testhost <span class="se">\</span>
+--keymap<span class="o">=</span>us
+</pre></div>
+</div>
+</li>
+<li><p>Set root passwd</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span> <span class="s1">&#39;root:yourpassword&#39;</span> <span class="p">|</span> chpasswd
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="bootloader">
+<h2>Bootloader<a class="headerlink" href="#bootloader" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Apply GRUB workaround</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;export ZPOOL_VDEV_NAME_PATH=YES&#39;</span> &gt;&gt; /etc/profile.d/zpool_vdev_name_path.sh
+<span class="c1"># shellcheck disable=SC1091</span>
+. /etc/profile.d/zpool_vdev_name_path.sh
+
+<span class="c1"># GRUB fails to detect rpool name, hard code as &quot;rpool&quot;</span>
+sed -i <span class="s2">&quot;s|rpool=.*|rpool=rpool|&quot;</span>  /etc/grub.d/10_linux
+</pre></div>
+</div>
+<p>This workaround needs to be applied for every GRUB update, as the
+update will overwrite the changes.</p>
+</li>
+<li><p>Install GRUB:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mkdir -p /boot/efi/archlinux/grub-bootdir/i386-pc/
+mkdir -p /boot/efi/archlinux/grub-bootdir/x86_64-efi/
+<span class="k">for</span> i in <span class="si">${</span><span class="nv">DISK</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+ grub-install --target<span class="o">=</span>i386-pc --boot-directory <span class="se">\</span>
+     /boot/efi/archlinux/grub-bootdir/i386-pc/  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+grub-install --target x86_64-efi --boot-directory <span class="se">\</span>
+ /boot/efi/archlinux/grub-bootdir/x86_64-efi/ --efi-directory <span class="se">\</span>
+ /boot/efi --bootloader-id archlinux --removable
+<span class="k">if</span> <span class="nb">test</span> -d /sys/firmware/efi/efivars/<span class="p">;</span> <span class="k">then</span>
+   grub-install --target x86_64-efi --boot-directory <span class="se">\</span>
+    /boot/efi/archlinux/grub-bootdir/x86_64-efi/ --efi-directory <span class="se">\</span>
+    /boot/efi --bootloader-id archlinux
+<span class="k">fi</span>
+</pre></div>
+</div>
+</li>
+<li><p>Import both bpool and rpool at boot:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;GRUB_CMDLINE_LINUX=&quot;zfs_import_dir=/dev/&quot;&#39;</span> &gt;&gt; /etc/default/grub
+</pre></div>
+</div>
+</li>
+<li><p>Generate GRUB menu:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mkdir -p /boot/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+cp /boot/grub/grub.cfg <span class="se">\</span>
+ /boot/efi/archlinux/grub-bootdir/x86_64-efi/grub/grub.cfg
+cp /boot/grub/grub.cfg <span class="se">\</span>
+ /boot/efi/archlinux/grub-bootdir/i386-pc/grub/grub.cfg
+</pre></div>
+</div>
+</li>
+<li><p>For both legacy and EFI booting: mirror ESP content:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">espdir</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+find /boot/efi/ -maxdepth <span class="m">1</span> -mindepth <span class="m">1</span> -type d -print0 <span class="se">\</span>
+<span class="p">|</span> xargs -t -0I <span class="s1">&#39;{}&#39;</span> cp -r <span class="s1">&#39;{}&#39;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">espdir</span><span class="si">}</span><span class="s2">&quot;</span>
+find <span class="s2">&quot;</span><span class="si">${</span><span class="nv">espdir</span><span class="si">}</span><span class="s2">&quot;</span> -maxdepth <span class="m">1</span> -mindepth <span class="m">1</span> -type d -print0 <span class="se">\</span>
+<span class="p">|</span> xargs -t -0I <span class="s1">&#39;{}&#39;</span> sh -vxc <span class="s2">&quot;find /boot/efis/ -maxdepth 1 -mindepth 1 -type d -print0 | xargs -t -0I &#39;[]&#39; cp -r &#39;{}&#39; &#39;[]&#39;&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Exit chroot</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">exit</span>
+</pre></div>
+</div>
+</li>
+<li><p>Unmount filesystems and create initial system snapshot
+You can later create a boot environment from this snapshot.
+See <a class="reference external" href="../zfs_root_maintenance.html">Root on ZFS maintenance page</a>.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>umount -Rl <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>
+zfs snapshot -r rpool@initial-installation
+zfs snapshot -r bpool@initial-installation
+</pre></div>
+</div>
+</li>
+<li><p>Export all pools</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zpool <span class="nb">export</span> -a
+</pre></div>
+</div>
+</li>
+<li><p>Reboot</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>reboot
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Arch Linux" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../Debian/index.html" class="btn btn-neutral float-right" title="Debian" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, OpenZFS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Root on ZFS maintenance &mdash; OpenZFS  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/mandoc.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Project and Community" href="../Project and Community/index.html" />
+    <link rel="prev" title="Ubuntu 22.04 Root on ZFS for Raspberry Pi" href="Ubuntu/Ubuntu 22.04 Root on ZFS for Raspberry Pi.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #29667e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_main.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Alpine Linux/index.html">Alpine Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Arch Linux/index.html">Arch Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Debian/index.html">Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Fedora/index.html">Fedora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FreeBSD.html">FreeBSD</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://wiki.gentoo.org/wiki/ZFS">Gentoo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NixOS/index.html">NixOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openSUSE/index.html">openSUSE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RHEL-based distro/index.html">RHEL-based distro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Ubuntu/index.html">Ubuntu</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Root on ZFS maintenance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#boot-environment">Boot Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disk-replacement">Disk replacement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bootloader-recovery">Bootloader Recovery</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Project and Community/index.html">Project and Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer Resources/index.html">Developer Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Performance and Tuning/index.html">Performance and Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Basic Concepts/index.html">Basic Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../msg/index.html">ZFS Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #29667e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenZFS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting Started</a></li>
+      <li class="breadcrumb-item active">Root on ZFS maintenance</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/openzfs/openzfs-docs/blob/master/docs/Getting Started/zfs_root_maintenance.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="root-on-zfs-maintenance">
+<h1>Root on ZFS maintenance<a class="headerlink" href="#root-on-zfs-maintenance" title="Permalink to this headline"></a></h1>
+<div class="section" id="boot-environment">
+<h2>Boot Environment<a class="headerlink" href="#boot-environment" title="Permalink to this headline"></a></h2>
+<p>This section is compatible with Alpine, Arch, Fedora and RHEL guides.
+Not necessary for NixOS.  Incompatible with Ubuntu and Debian guides.</p>
+<p>Note: boot environments as described below are intended only for
+system recovery purposes, that is, you boot into the alternate boot
+environment once to perform system recovery on the default datasets:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>rpool/distro/root
+bpool/distro/root
+</pre></div>
+</div>
+<p>then reboot to those datasets once you have successfully recovered the
+system.</p>
+<p>Switching the default boot environment complicates bootloader recovery
+and other maintenance operations and is thus currently not supported.</p>
+<ol class="arabic">
+<li><p>If you want to use the <code class="docutils literal notranslate"><span class="pre">&#64;initial-installation</span></code> snapshot created
+during installation, set <code class="docutils literal notranslate"><span class="pre">my_boot_env=initial-installation</span></code> and
+skip Step 3 and 4.</p></li>
+<li><p>Identify which dataset is currently mounted as root
+<code class="docutils literal notranslate"><span class="pre">/</span></code> and boot <code class="docutils literal notranslate"><span class="pre">/boot</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> -x
+<span class="nv">boot_dataset</span><span class="o">=</span><span class="k">$(</span>df -P /boot <span class="p">|</span> tail -n1 <span class="p">|</span> cut -f1 -d<span class="s1">&#39; &#39;</span> <span class="o">||</span> <span class="nb">true</span> <span class="k">)</span>
+<span class="nv">root_dataset</span><span class="o">=</span><span class="k">$(</span>df -P / <span class="p">|</span> tail -n1 <span class="p">|</span> cut -f1 -d<span class="s1">&#39; &#39;</span> <span class="o">||</span> <span class="nb">true</span> <span class="k">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Choose a name for the new boot environment</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">my_boot_env</span><span class="o">=</span>backup
+</pre></div>
+</div>
+</li>
+<li><p>Take snapshots of the <code class="docutils literal notranslate"><span class="pre">/</span></code> and <code class="docutils literal notranslate"><span class="pre">/boot</span></code> datasets</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zfs snapshot <span class="s2">&quot;</span><span class="si">${</span><span class="nv">boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span>@<span class="s2">&quot;</span><span class="si">${</span><span class="nv">my_boot_env</span><span class="si">}</span><span class="s2">&quot;</span>
+zfs snapshot <span class="s2">&quot;</span><span class="si">${</span><span class="nv">root_dataset</span><span class="si">}</span><span class="s2">&quot;</span>@<span class="s2">&quot;</span><span class="si">${</span><span class="nv">my_boot_env</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create clones from read-only snapshots</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">new_root_dataset</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">root_dataset</span><span class="p">%/*</span><span class="si">}</span><span class="s2">&quot;</span>/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">my_boot_env</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nv">new_boot_dataset</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">boot_dataset</span><span class="p">%/*</span><span class="si">}</span><span class="s2">&quot;</span>/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">my_boot_env</span><span class="si">}</span><span class="s2">&quot;</span>
+
+zfs clone -o <span class="nv">canmount</span><span class="o">=</span>noauto <span class="se">\</span>
+  -o <span class="nv">mountpoint</span><span class="o">=</span>/ <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">root_dataset</span><span class="si">}</span><span class="s2">&quot;</span>@<span class="s2">&quot;</span><span class="si">${</span><span class="nv">my_boot_env</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_root_dataset</span><span class="si">}</span><span class="s2">&quot;</span>
+
+zfs clone -o <span class="nv">canmount</span><span class="o">=</span>noauto <span class="se">\</span>
+  -o <span class="nv">mountpoint</span><span class="o">=</span>legacy <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span>@<span class="s2">&quot;</span><span class="si">${</span><span class="nv">my_boot_env</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Mount clone and update file system table (fstab)</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">MNT</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+mount -t zfs -o zfsutil <span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_root_dataset</span><span class="si">}</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>
+mount -t zfs  <span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot
+
+sed -i s,<span class="s2">&quot;</span><span class="si">${</span><span class="nv">root_dataset</span><span class="si">}</span><span class="s2">&quot;</span>,<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_root_dataset</span><span class="si">}</span><span class="s2">&quot;</span>,g <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/fstab
+sed -i s,<span class="s2">&quot;</span><span class="si">${</span><span class="nv">boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span>,<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span>,g <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/etc/fstab
+
+<span class="k">if</span> <span class="nb">test</span> -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/grub/grub.cfg<span class="p">;</span> <span class="k">then</span>
+  <span class="nv">is_grub2</span><span class="o">=</span>n
+  sed -i s,<span class="s2">&quot;</span><span class="si">${</span><span class="nv">boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2">&quot;</span>,<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2">&quot;</span>,g <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/grub/grub.cfg
+<span class="k">elif</span> <span class="nb">test</span> -f <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/grub2/grub.cfg<span class="p">;</span> <span class="k">then</span>
+  <span class="nv">is_grub2</span><span class="o">=</span>y
+  sed -i s,<span class="s2">&quot;</span><span class="si">${</span><span class="nv">boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2">&quot;</span>,<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2">&quot;</span>,g <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>/boot/grub2/grub.cfg
+<span class="k">else</span>
+  <span class="nb">echo</span> <span class="s2">&quot;ERROR: no grub menu found!&quot;</span>
+  <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+</pre></div>
+</div>
+<p>Do not proceed if no grub menu was found!</p>
+</li>
+<li><p>Unmount clone</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>umount -Rl <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MNT</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add new boot environment as GRUB menu entry</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;# </span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span> &gt; new_boot_env_entry_<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nb">printf</span> <span class="s1">&#39;\n%s&#39;</span> <span class="s2">&quot;menuentry &#39;Boot environment </span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2"> from </span><span class="si">${</span><span class="nv">boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2">&#39; &quot;</span>  <span class="se">\</span>
+  &gt;&gt; new_boot_env_entry_<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">is_grub2</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">=</span> y <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+   <span class="c1"># shellcheck disable=SC2016</span>
+   <span class="nb">printf</span> <span class="s1">&#39;{ search --set=drive1 --label bpool; configfile ($drive1)/%s@/grub2/grub.cfg; }&#39;</span> <span class="se">\</span>
+   <span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2">&quot;</span> &gt;&gt; new_boot_env_entry_<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">else</span>
+   <span class="c1"># shellcheck disable=SC2016</span>
+   <span class="nb">printf</span> <span class="s1">&#39;{ search --set=drive1 --label bpool; configfile ($drive1)/%s@/grub/grub.cfg; }&#39;</span> <span class="se">\</span>
+   <span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2">&quot;</span> &gt;&gt; new_boot_env_entry_<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">fi</span>
+
+find /boot/efis/ -name <span class="s2">&quot;grub.cfg&quot;</span> -print0 <span class="se">\</span>
+<span class="p">|</span> xargs -t -0I <span class="s1">&#39;{}&#39;</span> sh -vxc <span class="s2">&quot;tail -n1 new_boot_env_entry_</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">##*/</span><span class="si">}</span><span class="s2">  &gt;&gt; &#39;{}&#39;&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Do not delete <code class="docutils literal notranslate"><span class="pre">new_boot_env_entry_&quot;${new_boot_dataset##*/}&quot;</span></code> file.  It
+is needed when you want to remove the new boot environment from
+GRUB menu later.</p></li>
+<li><p>After reboot, select boot environment entry from GRUB
+menu to boot from the clone.  Press ESC inside
+submenu to return to the previous menu.</p></li>
+<li><p>Steps above can also be used to create a new clone
+from an existing snapshot.</p></li>
+<li><p>To delete the boot environment, first store its name in a
+variable:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">my_boot_env</span><span class="o">=</span>backup
+</pre></div>
+</div>
+</li>
+<li><p>Ensure that the boot environment is not
+currently used</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span> -x
+<span class="nv">boot_dataset</span><span class="o">=</span><span class="k">$(</span>df -P /boot <span class="p">|</span> tail -n1 <span class="p">|</span> cut -f1 -d<span class="s1">&#39; &#39;</span> <span class="o">||</span> <span class="nb">true</span> <span class="k">)</span>
+<span class="nv">root_dataset</span><span class="o">=</span><span class="k">$(</span>df -P / <span class="p">|</span> tail -n1 <span class="p">|</span> cut -f1 -d<span class="s1">&#39; &#39;</span> <span class="o">||</span> <span class="nb">true</span> <span class="k">)</span>
+<span class="nv">new_boot_dataset</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">boot_dataset</span><span class="p">%/*</span><span class="si">}</span><span class="s2">&quot;</span>/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">my_boot_env</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nv">rm_boot_dataset</span><span class="o">=</span><span class="k">$(</span>head -n1 new_boot_env_entry_<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> sed <span class="s1">&#39;s|^# *||&#39;</span> <span class="o">||</span> <span class="nb">true</span> <span class="k">)</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rm_boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="nb">echo</span> <span class="s2">&quot;ERROR: the dataset you want to delete is the current root! abort!&quot;</span>
+  <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+</pre></div>
+</div>
+</li>
+<li><p>Then check the origin snapshot</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">rm_root_dataset</span><span class="o">=</span>rpool/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">rm_boot_dataset</span><span class="p">#bpool/</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="nv">rm_boot_dataset_origin</span><span class="o">=</span><span class="k">$(</span>zfs get -H origin <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rm_boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">|</span>cut -f3 <span class="o">||</span> <span class="nb">true</span> <span class="k">)</span>
+<span class="nv">rm_root_dataset_origin</span><span class="o">=</span><span class="k">$(</span>zfs get -H origin <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rm_root_dataset</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">|</span>cut -f3 <span class="o">||</span> <span class="nb">true</span> <span class="k">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Finally, destroy clone (boot environment) and its
+origin snapshot</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zfs destroy <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rm_root_dataset</span><span class="si">}</span><span class="s2">&quot;</span>
+zfs destroy <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rm_root_dataset_origin</span><span class="si">}</span><span class="s2">&quot;</span>
+zfs destroy <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rm_boot_dataset</span><span class="si">}</span><span class="s2">&quot;</span>
+zfs destroy <span class="s2">&quot;</span><span class="si">${</span><span class="nv">rm_boot_dataset_origin</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Remove GRUB entry</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">new_entry_escaped</span><span class="o">=</span><span class="k">$(</span>tail -n1 new_boot_env_entry_<span class="s2">&quot;</span><span class="si">${</span><span class="nv">new_boot_dataset</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> sed -e <span class="s1">&#39;s/[\/&amp;]/\\&amp;/g&#39;</span> <span class="o">||</span> <span class="nb">true</span> <span class="k">)</span>
+find /boot/efis/ -name <span class="s2">&quot;grub.cfg&quot;</span> -print0 <span class="p">|</span> xargs -t -0I <span class="s1">&#39;{}&#39;</span> sed -i <span class="s2">&quot;/</span><span class="si">${</span><span class="nv">new_entry_escaped</span><span class="si">}</span><span class="s2">/d&quot;</span> <span class="s1">&#39;{}&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="disk-replacement">
+<h2>Disk replacement<a class="headerlink" href="#disk-replacement" title="Permalink to this headline"></a></h2>
+<p>When a disk fails in a mirrored setup, the disk can be replaced with
+the following procedure.</p>
+<ol class="arabic">
+<li><p>Shutdown the computer.</p></li>
+<li><p>Replace the failed disk with another disk.  The replacement should
+be at least the same size or larger than the failed disk.</p></li>
+<li><p>Boot the computer.</p>
+<p>When a disk fails, the system will boot, albeit several minutes
+slower than normal.</p>
+<p>For NixOS, this is due to the initrd and systemd designed to only
+import a pool in degraded state after a 90s timeout.</p>
+<p>Swap partition on that disk will also fail.</p>
+</li>
+<li><p>Install GNU <code class="docutils literal notranslate"><span class="pre">parted</span></code> with your distribution package manager.</p></li>
+<li><p>Identify the bad disk and a working old disk</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">ZPOOL_VDEV_NAME_PATH</span><span class="o">=</span><span class="m">1</span> zpool status
+
+pool:   bpool
+status: DEGRADED
+action: Replace the device using <span class="s1">&#39;zpool replace&#39;</span>.
+...
+config: bpool
+    mirror-0
+    <span class="m">2387489723748</span>                    UNAVAIL    <span class="m">0</span>  <span class="m">0</span>  <span class="m">0</span>   was /dev/disk/by-id/ata-BAD-part2
+    /dev/disk/by-id/ata-disk_known_good-part2    ONLINE     <span class="m">0</span>  <span class="m">0</span>  <span class="m">0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Store the bad disk and a working old disk in a variable, omit the partition number <code class="docutils literal notranslate"><span class="pre">-partN</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">disk_to_replace</span><span class="o">=</span>/dev/disk/by-id/ata-disk_to_replace
+<span class="nv">disk_known_good</span><span class="o">=</span>/dev/disk/by-id/ata-disk_known_good
+</pre></div>
+</div>
+</li>
+<li><p>Identify the new disk</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>find /dev/disk/by-id/
+
+/dev/disk/by-id/ata-disk_known_good-part1
+/dev/disk/by-id/ata-disk_known_good-part2
+...
+/dev/disk/by-id/ata-disk_known_good-part5
+/dev/disk/by-id/ata-disk_new       &lt;-- new disk w/o partition table
+</pre></div>
+</div>
+</li>
+<li><p>Store the new disk in a variable</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">disk_new</span><span class="o">=</span>/dev/disk/by-id/ata-disk_new
+</pre></div>
+</div>
+</li>
+<li><p>Create partition table on <code class="docutils literal notranslate"><span class="pre">&quot;${disk_new}&quot;</span></code>, refer to respective
+installation pages for details.</p></li>
+<li><p>Format and mount EFI system partition, refer to respective
+installation pages for details.</p></li>
+<li><p>Replace failed disk in ZFS pool</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>zpool offline bpool <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk_to_replace</span><span class="si">}</span><span class="s2">&quot;</span>-part2
+zpool offline rpool <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk_to_replace</span><span class="si">}</span><span class="s2">&quot;</span>-part3
+zpool replace bpool <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk_to_replace</span><span class="si">}</span><span class="s2">&quot;</span>-part2 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk_new</span><span class="si">}</span><span class="s2">&quot;</span>-part2
+zpool replace rpool <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk_to_replace</span><span class="si">}</span><span class="s2">&quot;</span>-part3 <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk_new</span><span class="si">}</span><span class="s2">&quot;</span>-part3
+zpool online  bpool <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk_new</span><span class="si">}</span><span class="s2">&quot;</span>-part2
+zpool online  rpool <span class="s2">&quot;</span><span class="si">${</span><span class="nv">disk_new</span><span class="si">}</span><span class="s2">&quot;</span>-part3
+</pre></div>
+</div>
+<p>Let the new disk resilver.  Check status with <code class="docutils literal notranslate"><span class="pre">zpool</span> <span class="pre">status</span></code>.</p>
+</li>
+<li><p>Reinstall and mirror bootloader, refer to respective installation
+pages for details.</p>
+<p>If you are using NixOS, see below.</p>
+</li>
+<li><p>For NixOS, replace bad disk with new disk inside per-host
+configuration file.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sed -i <span class="s2">&quot;s|&quot;</span><span class="si">${</span><span class="nv">disk_to_replace</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;|&quot;</span><span class="si">${</span><span class="nv">disk_new</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;|&quot;</span> /etc/nixos/hosts/exampleHost/default.nix
+</pre></div>
+</div>
+</li>
+<li><p>Commit and apply the changed configuration, reinstall bootloader, then reboot</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git -C /etc/nixos commit -asm <span class="s2">&quot;replace &quot;</span><span class="si">${</span><span class="nv">disk_to_replace</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot; with &quot;</span><span class="si">${</span><span class="nv">disk_new</span><span class="p">##*/</span><span class="si">}</span><span class="s2">&quot;.&quot;</span>
+
+nixos-rebuild boot --install-bootloader
+
+reboot
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="bootloader-recovery">
+<h2>Bootloader Recovery<a class="headerlink" href="#bootloader-recovery" title="Permalink to this headline"></a></h2>
+<p>This section is compatible with Alpine, Arch, Fedora, RHEL and NixOS
+root on ZFS guides.</p>
+<p>Sometimes the GRUB bootloader might be accidentally overwritten,
+rendering the system inaccessible.  However, as long as the disk
+partitions where boot pool and root pool resides remain untouched, the
+system can still be booted easily.</p>
+<ol class="arabic">
+<li><p>Download GRUB rescue image from <a class="reference external" href="https://github.com/ne9z/grub-rescue-flake/releases">this repo</a>.</p>
+<p>You can also build the image yourself if you are familiar with Nix
+package manager.</p>
+</li>
+<li><p>Extract either x86_64-efi or i386-pc image from the archive.</p></li>
+<li><p>Write the image to a disk.</p></li>
+<li><p>Boot the computer from the GRUB rescue disk.  Select your distro in
+GRUB menu.</p></li>
+<li><p>Reinstall bootloader.  See respective installation pages for details.</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Ubuntu/Ubuntu 22.04 Root on ZFS for Raspberry Pi.html" class="btn btn-neutral float-left" title="Ubuntu 22.04 Root on ZFS for Raspberry Pi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../Project and Community/index.html" class="btn btn-neutral float-right" title="Project and Community" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, OpenZFS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
